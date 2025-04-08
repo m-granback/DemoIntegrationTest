@@ -6,7 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.client.HttpStatusCodeException;
+import org.springframework.test.annotation.Rollback;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 import se.verran.demointegrationtest.entities.Student;
 import se.verran.demointegrationtest.repositories.StudentRepository;
@@ -19,6 +20,9 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @SpringBootTest
+// Vi behöver utföra rollback så att vi har samma utgångsläge i varje testfall
+@Transactional
+@Rollback
 class StudentControllerStudentServiceStudentRepositoryIntegrationTest {
 
     private StudentController studentController;;
@@ -34,6 +38,8 @@ class StudentControllerStudentServiceStudentRepositoryIntegrationTest {
 
     @Test
     void addStudentShouldReturnStatusCode200AndStudentBody() {
+        System.out.println("Antal studerande: " + studentRepository.findAll().size());
+
         // Given
         Student student = new Student("Lars", "Skoog", LocalDate.of(51,5,9), "lars@skoog.se");
 
@@ -45,6 +51,7 @@ class StudentControllerStudentServiceStudentRepositoryIntegrationTest {
     }
     @Test
     void addStudentShouldReturnStatusCodeConflict() {
+        System.out.println("Antal studerande: " + studentRepository.findAll().size());
         // Given
         Student student = new Student("Lars", "Skoog", LocalDate.of(51,5,9), "lars@skoog.se");
         Student firstAddedStudent = new Student("Lars", "Skog", LocalDate.of(69,2,9), "lars@skoog.se");
