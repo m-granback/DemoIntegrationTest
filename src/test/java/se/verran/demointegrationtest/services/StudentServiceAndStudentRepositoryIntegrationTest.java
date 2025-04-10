@@ -3,6 +3,8 @@ package se.verran.demointegrationtest.services;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.annotation.Rollback;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 import se.verran.demointegrationtest.entities.Student;
 import se.verran.demointegrationtest.repositories.StudentRepository;
@@ -13,6 +15,8 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@Transactional
+@Rollback
 class StudentServiceAndStudentRepositoryIntegrationTest {
 
     private StudentService studentService;

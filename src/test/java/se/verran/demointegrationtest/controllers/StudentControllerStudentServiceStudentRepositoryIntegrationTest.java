@@ -26,13 +26,11 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 class StudentControllerStudentServiceStudentRepositoryIntegrationTest {
 
     private StudentController studentController;;
-    private StudentService studentService;
     private StudentRepository studentRepository;
 
     @Autowired
     public StudentControllerStudentServiceStudentRepositoryIntegrationTest(StudentController studentController, StudentService studentService, StudentRepository studentRepository) {
         this.studentController = studentController;
-        this.studentService = studentService;
         this.studentRepository = studentRepository;
     }
 
@@ -57,6 +55,7 @@ class StudentControllerStudentServiceStudentRepositoryIntegrationTest {
         Student firstAddedStudent = new Student("Lars", "Skog", LocalDate.of(69,2,9), "lars@skoog.se");
         // When
         studentRepository.save(firstAddedStudent);
+
         ResponseStatusException result = assertThrows(ResponseStatusException.class, () -> studentController.addStudent(student));
         assertThat(result.getStatusCode()).isEqualTo(HttpStatus.CONFLICT);
         assertThat(result.getBody().getDetail()).isEqualTo("Email lars@skoog.se already exists");
